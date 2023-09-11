@@ -1,4 +1,4 @@
-def getCountOfUniqueDigits(file_path):
+def getResult_q1(file_path):
     with open(file_path, "r") as file:
         content = file.readlines()
 
@@ -12,14 +12,17 @@ def getCountOfUniqueDigits(file_path):
     return result
 
 
-result = getCountOfUniqueDigits("input1.txt")
+result = getResult_q1("./input1.txt")
 print("result : {}".format(result))
 
-result = getCountOfUniqueDigits("input2.txt")
+result = getResult_q1("./input2.txt")
+print("result : {}".format(result))
+
+result = getResult_q1("./input3.txt")
 print("result : {}".format(result))
 
 
-def getSum(file_path):
+def getResult_q2(file_path):
     with open(file_path, "r") as file:
         content = file.readlines()
 
@@ -27,6 +30,7 @@ def getSum(file_path):
     for data in content:
         list = [[] for _ in range(9)]
         dict = {}
+        list_result = []
         inputs = data.split("|")[0].strip().split(" ")
         outputs = data.split("|")[1].strip().split(" ")
 
@@ -41,16 +45,16 @@ def getSum(file_path):
 
         dict[8] = list[7][0]
 
-        a = dict[7].difference(dict[1])
+        a = dict[7] - dict[1]
         abcdf = a.union(dict[4])
         for temp in list[6]:
-            set_temp = temp.difference(abcdf)
-            if len(set_temp) > 0:
+            set_temp = temp - abcdf
+            if len(set_temp) == 1:
                 g = set_temp
                 dict[9] = temp
                 list[6].remove(temp)
                 break
-        e = dict[8].difference(dict[9])
+        e = dict[8] - dict[9]
 
         for temp in list[5]:
             if dict[1].issubset(temp):
@@ -66,7 +70,7 @@ def getSum(file_path):
 
         dict[5] = list[5][0]
 
-        c = dict[9].difference(dict[5])
+        c = dict[9] - dict[5]
 
         for temp in list[6]:
             if c.issubset(temp):
@@ -76,11 +80,27 @@ def getSum(file_path):
 
         dict[6] = list[6][0]
 
+        for output in outputs:
+            output_set = set(output)
+            for k, v in dict.items():
+                if v == output_set:
+                    list_result.append(k)
+
+        result += (
+            list_result[0] * 1000
+            + list_result[1] * 100
+            + list_result[2] * 10
+            + list_result[3]
+        )
+
     return result
 
 
-result = getSum("input1.txt")
+result = getResult_q2("./input1.txt")
 print("result : {}".format(result))
 
-# result = getSum("input2.txt")
-# print("result : {}".format(result))
+result = getResult_q2("./input2.txt")
+print("result : {}".format(result))
+
+result = getResult_q2("./input3.txt")
+print("result : {}".format(result))
