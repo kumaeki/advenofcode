@@ -48,9 +48,7 @@ def getResult_q2(file_path):
         a = dict[7] - dict[1]
         abcdf = a.union(dict[4])
         for temp in list[6]:
-            set_temp = temp - abcdf
-            if len(set_temp) == 1:
-                g = set_temp
+            if len(temp - abcdf) == 1:
                 dict[9] = temp
                 list[6].remove(temp)
                 break
