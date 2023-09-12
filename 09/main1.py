@@ -1,4 +1,4 @@
-def getResult_q1(file_path):
+def getResult(file_path):
     with open(file_path, "r") as file:
         content = file.readlines()
 
@@ -44,8 +44,8 @@ def getLowPoint(x, y, moves, matrix, matrix_result):
     return matrix[x][y] if isMin else -1
 
 
-result = getResult_q1("./input1.txt")
+result = getResult("./input1.txt")
 print("result : {}".format(result))
 
-result = getResult_q1("./input2.txt")
+result = getResult("./input2.txt")
 print("result : {}".format(result))
