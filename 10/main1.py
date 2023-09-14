@@ -9,19 +9,18 @@ def get_result(file_path):
 
     for data in content:
         row = [char for char in data.strip()]
-        sub_func(row, times,pairs)       
+        sub_func(row, times, pairs)
 
     for item in points.keys():
-        result += points[item]*times[item]
+        result += points[item] * times[item]
 
     return result
 
 
-def sub_func(data,times,pairs):
+def sub_func(data, times, pairs):
     new_data = []
     for item in data:
-
-        if  item not in pairs:
+        if item not in pairs:
             new_data.append(item)
             continue
 
@@ -33,6 +32,7 @@ def sub_func(data,times,pairs):
         else:
             times[item] += 1
             break
+
 
 print(get_result("./input1.txt"))
 print(get_result("./input2.txt"))

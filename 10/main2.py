@@ -1,48 +1,46 @@
 def get_result(file_path):
-    with open(file_path, "r") as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         content = file.readlines()
 
-    result_list = []
-    matrix = []
-    moves = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+    result = 0
+    points = {")": 1, "]": 2, "}": 3, ">": 4}
+    point_list = []
+    pairs = {")": "(", "]": "[", "}": "{", ">": "<"}
+    pairs_left = {"(": ")", "[": "]", "{": "}", "<": ">"}
+
     for data in content:
-        row = [int(char) for char in data.strip()]
-        matrix.append(row)
+        point = 0
+        row = [char for char in data.strip()]
+        isCorrupted, new_row = sub_func(row, pairs)
+        if not isCorrupted and len(new_row) > 0:
+            for i in range(len(new_row) - 1, -1, -1):
+                item = new_row[i]
+                pair = pairs_left[item]
+                point = point * 5 + points[pair]
+            point_list.append(point)
 
-    l = len(matrix)
-    w = len(matrix[0])
+    index = len(point_list) // 2
+    point_list.sort()
 
-    matrix_result = [[0 for _ in range(w)] for _ in range(l)]
-
-    for i in range(l):
-        for j in range(w):
-            temp = getBasinSize(i, j, moves, matrix, matrix_result)
-            if temp > 0:
-                result_list.append(temp)
-
-    sorted_list = sorted(result_list)
-    return sorted_list[-1]*sorted_list[-2]*sorted_list[-3]
+    return point_list[index]
 
 
-def getBasinSize(x, y, moves, matrix, matrix_result):
-    if matrix_result[x][y] > 0 or matrix[x][y] == 9:
-        return 0
-
-    matrix_result[x][y] = 1
-    for move in moves:
-        nextx = x + move[0]
-        nexty = y + move[1]
-        if nextx < 0 or nextx >= len(matrix) or nexty < 0 or nexty >= len(matrix[0]):
+def sub_func(data, pairs):
+    new_data = []
+    for item in data:
+        if item not in pairs:
+            new_data.append(item)
             continue
 
-        matrix_result[x][y] += getBasinSize(nextx,
-                                            nexty, moves, matrix, matrix_result)
+        pair = pairs[item]
+        size = len(new_data)
 
-    return matrix_result[x][y]
+        if new_data[size - 1] == pair:
+            new_data.pop()
+        else:
+            return True, new_data
+    return False, new_data
 
 
-result = get_result("./input1.txt")
-print("result : {}".format(result))
-
-result = get_result("./input2.txt")
-print("result : {}".format(result))
+print(get_result("./input1.txt"))
+print(get_result("./input2.txt"))
