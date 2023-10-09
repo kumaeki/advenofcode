@@ -6,19 +6,17 @@ def get_result(file_path):
     with open(file_path, "r", encoding="utf-8") as file:
         content = file.readlines()
 
+    # get the origin matrix from input
     matrix_origin = []
     for line in content:
         matrix_origin.append(list(map(int, line.strip())))
-    # for row in matrix_origin:
-    #     print(row)
 
+    # extend the columns
     matrix_with_whole_row = []
     for row in matrix_origin:
         matrix_with_whole_row.append(get_whole_row(row))
 
-    # for row in matrix:
-    #     print(row)
-
+    # extend the rows, get the whole matrix
     h = len(matrix_with_whole_row)
     new_h = h * 5
     l = len(matrix_with_whole_row[0])
@@ -28,6 +26,7 @@ def get_result(file_path):
         mod = i % h
         matrix.append(get_next_row(matrix_with_whole_row[mod], times))
 
+    # dfs, but not recursive
     matrix_visited = [[sys.maxsize for _ in range(l)] for _ in range(new_h)]
     matrix_visited[0][0] = 0
     moves = [[0, 1], [0, -1], [-1, 0], [1, 0]]

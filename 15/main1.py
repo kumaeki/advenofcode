@@ -10,9 +10,9 @@ def get_result(file_path):
     for line in content:
         matrix.append(list(map(int, line.strip())))
 
+    # dfs, but not recursive
     h = len(matrix)
     l = len(matrix[0])
-
     matrix_visited = [[sys.maxsize for _ in range(l)] for _ in range(h)]
     matrix_visited[0][0] = 0
     moves = [[0, 1], [0, -1], [-1, 0], [1, 0]]
