@@ -1,3 +1,4 @@
+import queue
 import sys
 
 
@@ -9,21 +10,33 @@ def get_result(file_path):
     for line in content:
         matrix.append(list(map(int, line.strip())))
 
-    max_x = len(matrix)
-    max_y = len(matrix[0])
-    pre_row = [0 for _ in range(max_y + 1)]
+    h = len(matrix)
+    l = len(matrix[0])
 
-    first_row = matrix[0]
-    for j in range(1, max_y + 1):
-        pre_row[j] = pre_row[j - 1] + first_row[j - 1]
+    matrix_visited = [[sys.maxsize for _ in range(l)] for _ in range(h)]
+    matrix_visited[0][0] = 0
+    moves = [[0, 1], [0, -1], [-1, 0], [1, 0]]
 
-    for i in range(1, max_x):
-        cur_row = [sys.maxsize for _ in range(max_y + 1)]
-        for j in range(1, max_y + 1):
-            cur_row[j] = min(cur_row[j - 1], pre_row[j]) + matrix[i][j - 1]
-        pre_row = cur_row
+    que = queue.Queue()
+    que.put([0, 0])
+    total = 0
+    while not que.empty():
+        current = que.get()
 
-    return pre_row[max_y] - matrix[0][0]
+        for move in moves:
+            new_x = current[0] + move[0]
+            new_y = current[1] + move[1]
+            if new_x < 0 or new_x >= h or new_y < 0 or new_y >= l:
+                continue
+            total = matrix_visited[current[0]][current[1]]
+            total += matrix[new_x][new_y]
+            if total >= matrix_visited[new_x][new_y]:
+                continue
+
+            matrix_visited[new_x][new_y] = total
+            que.put([new_x, new_y])
+
+    return matrix_visited[h - 1][l - 1]
 
 
 print(get_result("./input1.txt"))
